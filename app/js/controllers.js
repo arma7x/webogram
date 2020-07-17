@@ -32,6 +32,46 @@ angular.module('myApp.controllers', ['myApp.i18n'])
   })
 
   .controller('AppLoginController', function ($scope, $rootScope, $location, $timeout, $modal, $modalStack, MtpApiManager, ErrorService, NotificationsManager, PasswordManager, ChangelogNotifyService, IdleManager, LayoutSwitchService, WebPushApiManager, TelegramMeWebService, _) {
+
+    document.getScroll = function() {
+      if (window.pageYOffset != undefined) {
+        return [pageXOffset, pageYOffset];
+      } else {
+        var sx, sy, d = document,
+            r = d.documentElement,
+            b = d.body;
+        sx = r.scrollLeft || b.scrollLeft || 0;
+        sy = r.scrollTop || b.scrollTop || 0;
+        return [sx, sy];
+      }
+    }
+
+
+    var y = 150;
+    function handleKeydown(e) {
+      switch(e.key) {
+        case "SoftLeft":
+          var scroll = document.getScroll();
+          window.scroll(0, scroll[1]+20);
+          break;
+        case "SoftRight":
+          var scroll = document.getScroll();
+          window.scroll(0, scroll[1]-20);
+          break;
+        case "BrowserBack":
+        case "Backspace":
+          window.close()
+          break;
+        case 'Call':
+          var e = $.Event("keydown", {
+            keyCode: 27
+          });
+          $("input").blur();
+          break;
+      }
+    }
+    document.activeElement.addEventListener('keydown', handleKeydown);
+
     $modalStack.dismissAll()
     IdleManager.start()
 
@@ -455,6 +495,55 @@ angular.module('myApp.controllers', ['myApp.i18n'])
   })
 
   .controller('AppIMController', function ($q, qSync, $scope, $location, $routeParams, $modal, $rootScope, $modalStack, MtpApiManager, AppUsersManager, AppChatsManager, AppMessagesManager, AppPeersManager, ContactsSelectService, ChangelogNotifyService, ErrorService, AppRuntimeManager, HttpsMigrateService, LayoutSwitchService, LocationParamsService, AppStickersManager) {
+
+    document.getScroll = function() {
+      if (window.pageYOffset != undefined) {
+        return [pageXOffset, pageYOffset];
+      } else {
+        var sx, sy, d = document,
+            r = d.documentElement,
+            b = d.body;
+        sx = r.scrollLeft || b.scrollLeft || 0;
+        sy = r.scrollTop || b.scrollTop || 0;
+        return [sx, sy];
+      }
+    }
+
+
+    var y = 150;
+    function handleKeydown(e) {
+      switch(e.key) {
+        case "SoftLeft":
+          var scroll = document.getScroll();
+          window.scroll(0, scroll[1]+20);
+          break;
+        case "SoftRight":
+          var scroll = document.getScroll();
+          window.scroll(0, scroll[1]-20);
+          break;
+        case "BrowserBack":
+        case "Backspace":
+          var mobile_im = document.getElementById('mobile_im');
+          if (mobile_im !== null) {
+            var exitApp = true;
+            for(var x in mobile_im.children) {
+              if (mobile_im.children[x].classList !== undefined) {
+                if (mobile_im.children[x].classList.contains('active')) {
+                  exitApp = false;
+                }
+              }
+            }
+            if (exitApp) {
+              window.close()
+            }
+          }
+          break;
+        case 'Call':
+          break;
+      }
+    }
+    document.activeElement.addEventListener('keydown', handleKeydown);
+    
     $scope.$on('$routeUpdate', updateCurDialog)
 
     var pendingParams = false

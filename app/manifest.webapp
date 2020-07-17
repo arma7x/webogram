@@ -4,6 +4,7 @@
   "version": "0.7.0",
   "type": "privileged",
   "launch_path": "/index.html",
+  "cursor": true,
   "developer": {
     "name": "Igor Zhukov",
     "url": "https://github.com/zhukov"
@@ -19,6 +20,9 @@
     "notification": "/index.html"
   }],
   "permissions": {
+    "serviceworker": {
+      "description": "Needed for assocating service worker"
+    },
     "desktop-notification": {
       "description": "Required to show new message notifications"
     },

@@ -1,4 +1,69 @@
+var __EXITAPP = true
+
+function __stayInAppCb() {
+  console.log('__EXITAPP = false')
+  __EXITAPP = false
+}
+
+function __exitAppCb(trace) {
+  console.log('__EXITAPP = true')
+  __EXITAPP = true
+}
+
+document.getScroll = function() {
+  if (window.pageYOffset != undefined) {
+    return [pageXOffset, pageYOffset]
+  } else {
+    var sx, sy, d = document,
+        r = d.documentElement,
+        b = d.body
+    sx = r.scrollLeft || b.scrollLeft || 0
+    sy = r.scrollTop || b.scrollTop || 0
+    return [sx, sy]
+  }
+}
+
+function handleKeydown(e) {
+  switch(e.key) {
+    case "SoftLeft":
+      var scroll = document.getScroll()
+      window.scroll(0, scroll[1]+20)
+      break
+    case "SoftRight":
+      var scroll = document.getScroll()
+      window.scroll(0, scroll[1]-20)
+      break
+    case "BrowserBack":
+    case "Backspace":
+      mobile_im = document.getElementById('mobile_im')
+      if (mobile_im !== null) {
+        // __EXITAPP = true
+        for(var x in mobile_im.children) {
+          if (mobile_im.children[x].classList !== undefined) {
+            if (mobile_im.children[x].classList.contains('active')) {
+              __EXITAPP = false
+              break
+            }
+          }
+        }
+      }
+      //if (document.hasFocus()) {
+      //  document.activeElement.blur()
+      //  __EXITAPP = false
+      //}
+      if (__EXITAPP) {
+        window.close()
+      }
+      break
+    case 'Call':
+      $("input").blur();
+      break
+  }
+}
+document.activeElement.addEventListener('keydown', handleKeydown)
+
 ;(function initApplication () {
+
   // Prevent click-jacking
   try {
     if (window == window.top || window.chrome && chrome.app && chrome.app.window) {

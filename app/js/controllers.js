@@ -10,71 +10,6 @@
 
 /* Controllers */
 
-window['__EXITAPP'] = true;
-
-function __stayInAppCb() {
-  window['__EXITAPP'] = false;
-}
-
-function __exitAppCb() {
-  window['__EXITAPP'] = true;
-}
-
-document.getScroll = function() {
-  if (window.pageYOffset != undefined) {
-    return [pageXOffset, pageYOffset];
-  } else {
-    var sx, sy, d = document,
-        r = d.documentElement,
-        b = d.body;
-    sx = r.scrollLeft || b.scrollLeft || 0;
-    sy = r.scrollTop || b.scrollTop || 0;
-    return [sx, sy];
-  }
-}
-
-
-var y = 150;
-function handleKeydown(e) {
-  switch(e.key) {
-    case "SoftLeft":
-      var scroll = document.getScroll();
-      window.scroll(0, scroll[1]+20);
-      break;
-    case "SoftRight":
-      var scroll = document.getScroll();
-      window.scroll(0, scroll[1]-20);
-      break;
-    case "BrowserBack":
-    case "Backspace":
-      var mobile_im = document.getElementById('mobile_im');
-      if (mobile_im !== null) {
-        window['__EXITAPP'] = true;
-        for(var x in mobile_im.children) {
-          if (mobile_im.children[x].classList !== undefined) {
-            if (mobile_im.children[x].classList.contains('active')) {
-              window['__EXITAPP'] = false;
-            }
-          }
-        }
-        //if (exitApp) {
-        //  window.close()
-        //}
-      }
-      if (window['__EXITAPP']) {
-        window.close()
-      }
-      break;
-    case 'Call':
-      //var e = $.Event("keydown", {
-        //keyCode: 27
-      //});
-      //$("input").blur();
-      break;
-  }
-}
-document.activeElement.addEventListener('keydown', handleKeydown);
-
 angular.module('myApp.controllers', ['myApp.i18n'])
 
   .controller('AppWelcomeController', function ($scope, $location, MtpApiManager, ChangelogNotifyService, LayoutSwitchService) {
@@ -134,7 +69,6 @@ angular.module('myApp.controllers', ['myApp.i18n'])
       })
 
       modal.result.then(selectCountry).catch(__exitAppCb)
-
       modal.opened.then(__stayInAppCb).catch(__exitAppCb)
     }
 
@@ -601,10 +535,7 @@ angular.module('myApp.controllers', ['myApp.i18n'])
         backdrop: 'single'
       })
 
-      modal.result.then(function () {
-        __exitAppCb();
-      }).catch(__exitAppCb)
-
+      modal.result.then(__exitAppCb).catch(__exitAppCb)
       modal.opened.then(__stayInAppCb).catch(__exitAppCb)
     }
 
@@ -660,10 +591,7 @@ angular.module('myApp.controllers', ['myApp.i18n'])
             backdrop: 'single'
           })
 
-          modal.result.then(function () {
-            __exitAppCb();
-          }).catch(__exitAppCb)
-
+          modal.result.then(__exitAppCb).catch(__exitAppCb)
           modal.opened.then(__stayInAppCb).catch(__exitAppCb)
         }
       })
@@ -676,7 +604,7 @@ angular.module('myApp.controllers', ['myApp.i18n'])
             peerString: AppUsersManager.getUserString(foundContact)
           })
         }
-      })
+      })//.catch(__exitAppCb)
     }
 
     $scope.searchClear = function () {
@@ -4126,10 +4054,7 @@ angular.module('myApp.controllers', ['myApp.i18n'])
         windowClass: 'md_simple_modal_window'
       })
 
-      modal.result.then(function () {
-        __exitAppCb();
-      }).catch(__exitAppCb)
-
+      modal.result.then(__exitAppCb).catch(__exitAppCb)
       modal.opened.then(__stayInAppCb).catch(__exitAppCb)
     }
 
@@ -4176,10 +4101,7 @@ angular.module('myApp.controllers', ['myApp.i18n'])
         windowClass: 'md_simple_modal_window mobile_modal'
       })
 
-      modal.result.then(function () {
-        __exitAppCb();
-      }).catch(__exitAppCb)
-
+      modal.result.then(__exitAppCb).catch(__exitAppCb)
       modal.opened.then(__stayInAppCb).catch(__exitAppCb)
     }
 
@@ -4309,10 +4231,7 @@ angular.module('myApp.controllers', ['myApp.i18n'])
         windowClass: 'md_simple_modal_window'
       })
 
-      modal.result.then(function () {
-        __exitAppCb();
-      }).catch(__exitAppCb)
-
+      modal.result.then(__exitAppCb).catch(__exitAppCb)
       modal.opened.then(__stayInAppCb).catch(__exitAppCb)
 
       return cancelEvent($event)
@@ -4361,10 +4280,7 @@ angular.module('myApp.controllers', ['myApp.i18n'])
         windowClass: 'md_simple_modal_window mobile_modal'
       })
 
-      modal.result.then(function () {
-        __exitAppCb();
-      }).catch(__exitAppCb)
-
+      modal.result.then(__exitAppCb).catch(__exitAppCb)
       modal.opened.then(__stayInAppCb).catch(__exitAppCb)
     }
 
@@ -4451,10 +4367,7 @@ angular.module('myApp.controllers', ['myApp.i18n'])
 
       modal.result['finally'](updatePasswordState)
 
-      modal.result.then(function () {
-        __exitAppCb();
-      }).catch(__exitAppCb)
-
+      modal.result.then(__exitAppCb).catch(__exitAppCb)
       modal.opened.then(__stayInAppCb).catch(__exitAppCb)
     }
 
@@ -4465,10 +4378,7 @@ angular.module('myApp.controllers', ['myApp.i18n'])
         windowClass: 'md_simple_modal_window mobile_modal'
       })
 
-      modal.result.then(function () {
-        __exitAppCb();
-      }).catch(__exitAppCb)
-
+      modal.result.then(__exitAppCb).catch(__exitAppCb)
       modal.opened.then(__stayInAppCb).catch(__exitAppCb)
     }
 
@@ -4552,10 +4462,7 @@ angular.module('myApp.controllers', ['myApp.i18n'])
         windowClass: 'md_simple_modal_window mobile_modal'
       })
 
-      modal.result.then(function () {
-        __exitAppCb();
-      }).catch(__exitAppCb)
-
+      modal.result.then(__exitAppCb).catch(__exitAppCb)
       modal.opened.then(__stayInAppCb).catch(__exitAppCb)
     }
 
@@ -4566,10 +4473,7 @@ angular.module('myApp.controllers', ['myApp.i18n'])
         windowClass: 'md_simple_modal_window mobile_modal'
       })
 
-      modal.result.then(function () {
-        __exitAppCb();
-      }).catch(__exitAppCb)
-
+      modal.result.then(__exitAppCb).catch(__exitAppCb)
       modal.opened.then(__stayInAppCb).catch(__exitAppCb)
     }
 
@@ -4737,10 +4641,7 @@ angular.module('myApp.controllers', ['myApp.i18n'])
         windowClass: 'md_simple_modal_window mobile_modal'
       })
 
-      modal.result.then(function () {
-        __exitAppCb();
-      }).catch(__exitAppCb)
-
+      modal.result.then(__exitAppCb).catch(__exitAppCb)
       modal.opened.then(__stayInAppCb).catch(__exitAppCb)
     }
   })

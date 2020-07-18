@@ -308,6 +308,8 @@ angular.module('myApp.services', ['myApp.i18n', 'izhukov.utils'])
         windowClass: 'user_modal_window mobile_modal',
         backdrop: 'single'
       })
+      //modalInstance.result.then(__exitAppCb).catch(__exitAppCb)
+      modalInstance.opened.then(__stayInAppCb).catch(__exitAppCb)
     }
 
     function importContact (phone, firstName, lastName) {
@@ -398,16 +400,20 @@ angular.module('myApp.services', ['myApp.i18n', 'izhukov.utils'])
     }
 
     function openImportContact () {
-      return $modal.open({
+      var modal = $modal.open({
         templateUrl: templateUrl('import_contact_modal'),
         controller: 'ImportContactModalController',
         windowClass: 'md_simple_modal_window mobile_modal'
-      }).result.then(function (foundUserID) {
+      })
+
+      modal.opened.then(__stayInAppCb).catch(__exitAppCb)
+      return modal.result.then(function (foundUserID) {
+        //__exitAppCb()
         if (!foundUserID) {
           return $q.reject()
         }
         return foundUserID
-      })
+      })//.catch(__exitAppCb)
     }
 
     function setUserStatus (userID, offline) {
@@ -529,11 +535,14 @@ angular.module('myApp.services', ['myApp.i18n', 'izhukov.utils'])
     }
 
     function openPhonebookImport () {
-      return $modal.open({
+      var modal = $modal.open({
         templateUrl: templateUrl('phonebook_modal'),
         controller: 'PhonebookModalController',
         windowClass: 'phonebook_modal_window mobile_modal'
       })
+      //modal.result.then(__exitAppCb).catch(__exitAppCb)
+      modal.opened.then(__stayInAppCb).catch(__exitAppCb)
+      return modal
     }
 
     function getPhonebookContacts () {
@@ -839,6 +848,8 @@ angular.module('myApp.services', ['myApp.i18n', 'izhukov.utils'])
           scope: scope,
           windowClass: 'chat_modal_window channel_modal_window mobile_modal'
         })
+        //modalInstance.result.then(__exitAppCb).catch(__exitAppCb)
+        modalInstance.opened.then(__stayInAppCb).catch(__exitAppCb)
       } else {
         var modalInstance = $modal.open({
           templateUrl: templateUrl('chat_modal'),
@@ -846,6 +857,8 @@ angular.module('myApp.services', ['myApp.i18n', 'izhukov.utils'])
           scope: scope,
           windowClass: 'chat_modal_window mobile_modal'
         })
+        //modalInstance.result.then(__exitAppCb).catch(__exitAppCb)
+        modalInstance.opened.then(__stayInAppCb).catch(__exitAppCb)
       }
     }
 
@@ -1676,6 +1689,8 @@ angular.module('myApp.services', ['myApp.i18n', 'izhukov.utils'])
         scope: scope,
         windowClass: 'photo_modal_window'
       })
+      //modalInstance.result.then(__exitAppCb).catch(__exitAppCb)
+      modalInstance.opened.then(__stayInAppCb).catch(__exitAppCb)
     }
 
     function downloadPhoto (photoID) {
@@ -1826,13 +1841,15 @@ angular.module('myApp.services', ['myApp.i18n', 'izhukov.utils'])
       scope.webpageID = webpageID
       scope.messageID = messageID
 
-      $modal.open({
+      var modal = $modal.open({
         templateUrl: templateUrl('embed_modal'),
         windowTemplateUrl: templateUrl('media_modal_layout'),
         controller: 'EmbedModalController',
         scope: scope,
         windowClass: 'photo_modal_window'
       })
+      //modal.result.then(__exitAppCb).catch(__exitAppCb)
+      modal.opened.then(__stayInAppCb).catch(__exitAppCb)
     }
 
     function wrapForHistory (webPageID) {
@@ -1938,13 +1955,15 @@ angular.module('myApp.services', ['myApp.i18n', 'izhukov.utils'])
       scope.messageID = messageID
       scope.embedUrl = embedUrl
 
-      $modal.open({
+      var modal = $modal.open({
         templateUrl: templateUrl('game_modal'),
         windowTemplateUrl: templateUrl('media_modal_layout'),
         controller: 'GameModalController',
         scope: scope,
         windowClass: 'photo_modal_window mobile_modal'
       })
+      //modal.result.then(__exitAppCb).catch(__exitAppCb)
+      modal.opened.then(__stayInAppCb).catch(__exitAppCb)
     }
 
     function wrapForHistory (gameID) {
@@ -2283,6 +2302,8 @@ angular.module('myApp.services', ['myApp.i18n', 'izhukov.utils'])
         scope: scope,
         windowClass: 'document_modal_window'
       })
+      //modalInstance.result.then(__exitAppCb).catch(__exitAppCb)
+      modalInstance.opened.then(__stayInAppCb).catch(__exitAppCb)
     }
 
     function saveDocFile (docID) {
@@ -2334,13 +2355,16 @@ angular.module('myApp.services', ['myApp.i18n', 'izhukov.utils'])
       scope.docID = docID
       scope.messageID = messageID
 
-      return $modal.open({
+      var modal = $modal.open({
         templateUrl: templateUrl('video_modal'),
         windowTemplateUrl: templateUrl('media_modal_layout'),
         controller: 'VideoModalController',
         scope: scope,
         windowClass: 'video_modal_window'
       })
+      //modal.result.then(__exitAppCb).catch(__exitAppCb)
+      modal.opened.then(__stayInAppCb).catch(__exitAppCb)
+      return modal
     }
 
     return {
@@ -2715,6 +2739,8 @@ angular.module('myApp.services', ['myApp.i18n', 'izhukov.utils'])
         scope: scope,
         windowClass: 'stickerset_modal_window mobile_modal'
       })
+      //modal.result.then(__exitAppCb).catch(__exitAppCb)
+      modal.opened.then(__stayInAppCb).catch(__exitAppCb)
     }
 
     function getStickerSetsHash (stickerSets) {
@@ -3861,12 +3887,14 @@ angular.module('myApp.services', ['myApp.i18n', 'izhukov.utils'])
     $rootScope.$on('push_notification_click', function (e, notificationData) {
       if (notificationData.action == 'push_settings') {
         topMessagesPromise.then(function () {
-          $modal.open({
+          var modal = $modal.open({
             templateUrl: templateUrl('settings_modal'),
             controller: 'SettingsModalController',
             windowClass: 'settings_modal_window mobile_modal',
             backdrop: 'single'
           })
+          //modal.result.then(__exitAppCb).catch(__exitAppCb)
+          modal.opened.then(__stayInAppCb).catch(__exitAppCb)
         })
         return
       }
@@ -4382,9 +4410,11 @@ angular.module('myApp.services', ['myApp.i18n', 'izhukov.utils'])
         windowClass: options.windowClass || 'error_modal_window'
       })
 
+      //modal.result.then(__exitAppCb).catch(__exitAppCb)
       modal.result['finally'](function () {
         shownBoxes--
       })
+      modal.opened.then(__stayInAppCb).catch(__exitAppCb)
 
       return modal
     }
@@ -4408,6 +4438,8 @@ angular.module('myApp.services', ['myApp.i18n', 'izhukov.utils'])
         scope: scope,
         windowClass: options.windowClass || 'confirm_modal_window'
       })
+      //modal.result.then(__exitAppCb).catch(__exitAppCb)
+      modal.opened.then(__stayInAppCb).catch(__exitAppCb)
 
       return modal.result
     }
@@ -4440,13 +4472,16 @@ angular.module('myApp.services', ['myApp.i18n', 'izhukov.utils'])
         angular.extend(scope, options)
       }
 
-      return $modal.open({
+      var modal = $modal.open({
         templateUrl: templateUrl('peer_select'),
         controller: 'PeerSelectController',
         scope: scope,
         windowClass: 'peer_select_window mobile_modal',
         backdrop: 'single'
-      }).result
+      })
+      //modal.result.then(__exitAppCb).catch(__exitAppCb)
+      modal.opened.then(__stayInAppCb).catch(__exitAppCb)
+      return modal.result
     }
 
     function selectPeers (options) {
@@ -4464,13 +4499,16 @@ angular.module('myApp.services', ['myApp.i18n', 'izhukov.utils'])
         angular.extend(scope, options)
       }
 
-      return $modal.open({
+      var modal = $modal.open({
         templateUrl: templateUrl('peer_select'),
         controller: 'PeerSelectController',
         scope: scope,
         windowClass: 'peer_select_window mobile_modal',
         backdrop: 'single'
-      }).result
+      })
+      //modal.result.then(__exitAppCb).catch(__exitAppCb)
+      modal.opened.then(__stayInAppCb).catch(__exitAppCb)
+      return modal.result
     }
 
     return {
@@ -4490,13 +4528,16 @@ angular.module('myApp.services', ['myApp.i18n', 'izhukov.utils'])
         scope.action = 'select'
       }
 
-      return $modal.open({
+      var modal = $modal.open({
         templateUrl: templateUrl('contacts_modal'),
         controller: 'ContactsModalController',
         scope: scope,
         windowClass: 'contacts_modal_window mobile_modal',
         backdrop: 'single'
-      }).result
+      })
+      //modal.result.then(__exitAppCb).catch(__exitAppCb)
+      modal.opened.then(__stayInAppCb).catch(__exitAppCb)
+      return modal.result
     }
 
     return {
@@ -4550,12 +4591,14 @@ angular.module('myApp.services', ['myApp.i18n', 'izhukov.utils'])
       var $scope = $rootScope.$new()
       $scope.lastVersion = lastVersion
 
-      $modal.open({
+      var modal = $modal.open({
         controller: 'ChangelogModalController',
         templateUrl: templateUrl('changelog_modal'),
         scope: $scope,
         windowClass: 'changelog_modal_window mobile_modal'
       })
+      //modal.result.then(__exitAppCb).catch(__exitAppCb)
+      modal.opened.then(__stayInAppCb).catch(__exitAppCb)
     }
 
     return {

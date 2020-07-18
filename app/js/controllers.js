@@ -10,6 +10,71 @@
 
 /* Controllers */
 
+window['__EXITAPP'] = true;
+
+function __stayInAppCb() {
+  window['__EXITAPP'] = false;
+}
+
+function __exitAppCb() {
+  window['__EXITAPP'] = true;
+}
+
+document.getScroll = function() {
+  if (window.pageYOffset != undefined) {
+    return [pageXOffset, pageYOffset];
+  } else {
+    var sx, sy, d = document,
+        r = d.documentElement,
+        b = d.body;
+    sx = r.scrollLeft || b.scrollLeft || 0;
+    sy = r.scrollTop || b.scrollTop || 0;
+    return [sx, sy];
+  }
+}
+
+
+var y = 150;
+function handleKeydown(e) {
+  switch(e.key) {
+    case "SoftLeft":
+      var scroll = document.getScroll();
+      window.scroll(0, scroll[1]+20);
+      break;
+    case "SoftRight":
+      var scroll = document.getScroll();
+      window.scroll(0, scroll[1]-20);
+      break;
+    case "BrowserBack":
+    case "Backspace":
+      var mobile_im = document.getElementById('mobile_im');
+      if (mobile_im !== null) {
+        window['__EXITAPP'] = true;
+        for(var x in mobile_im.children) {
+          if (mobile_im.children[x].classList !== undefined) {
+            if (mobile_im.children[x].classList.contains('active')) {
+              window['__EXITAPP'] = false;
+            }
+          }
+        }
+        //if (exitApp) {
+        //  window.close()
+        //}
+      }
+      if (window['__EXITAPP']) {
+        window.close()
+      }
+      break;
+    case 'Call':
+      //var e = $.Event("keydown", {
+        //keyCode: 27
+      //});
+      //$("input").blur();
+      break;
+  }
+}
+document.activeElement.addEventListener('keydown', handleKeydown);
+
 angular.module('myApp.controllers', ['myApp.i18n'])
 
   .controller('AppWelcomeController', function ($scope, $location, MtpApiManager, ChangelogNotifyService, LayoutSwitchService) {
@@ -32,45 +97,6 @@ angular.module('myApp.controllers', ['myApp.i18n'])
   })
 
   .controller('AppLoginController', function ($scope, $rootScope, $location, $timeout, $modal, $modalStack, MtpApiManager, ErrorService, NotificationsManager, PasswordManager, ChangelogNotifyService, IdleManager, LayoutSwitchService, WebPushApiManager, TelegramMeWebService, _) {
-
-    document.getScroll = function() {
-      if (window.pageYOffset != undefined) {
-        return [pageXOffset, pageYOffset];
-      } else {
-        var sx, sy, d = document,
-            r = d.documentElement,
-            b = d.body;
-        sx = r.scrollLeft || b.scrollLeft || 0;
-        sy = r.scrollTop || b.scrollTop || 0;
-        return [sx, sy];
-      }
-    }
-
-
-    var y = 150;
-    function handleKeydown(e) {
-      switch(e.key) {
-        case "SoftLeft":
-          var scroll = document.getScroll();
-          window.scroll(0, scroll[1]+20);
-          break;
-        case "SoftRight":
-          var scroll = document.getScroll();
-          window.scroll(0, scroll[1]-20);
-          break;
-        case "BrowserBack":
-        case "Backspace":
-          window.close()
-          break;
-        case 'Call':
-          var e = $.Event("keydown", {
-            keyCode: 27
-          });
-          $("input").blur();
-          break;
-      }
-    }
-    document.activeElement.addEventListener('keydown', handleKeydown);
 
     $modalStack.dismissAll()
     IdleManager.start()
@@ -107,7 +133,9 @@ angular.module('myApp.controllers', ['myApp.i18n'])
         backdrop: 'single'
       })
 
-      modal.result.then(selectCountry)
+      modal.result.then(selectCountry).catch(__exitAppCb)
+
+      modal.opened.then(__stayInAppCb).catch(__exitAppCb)
     }
 
     function initPhoneCountry () {
@@ -155,6 +183,7 @@ angular.module('myApp.controllers', ['myApp.i18n'])
     }
 
     function selectCountry (country) {
+      __exitAppCb();
       selectedCountry = country
       if ($scope.credentials.phone_country != country.code) {
         $scope.credentials.phone_country = country.code
@@ -432,12 +461,15 @@ angular.module('myApp.controllers', ['myApp.i18n'])
         })
 
         modal.result.then(function (result) {
+          __exitAppCb();
           if (result && result.user) {
             saveAuth(result)
           } else {
             $scope.canReset = true
           }
-        })
+        }).catch(__exitAppCb)
+
+        modal.opened.then(__stayInAppCb).catch(__exitAppCb)
       }, function (error) {
         switch (error.type) {
           case 'PASSWORD_EMPTY':
@@ -495,54 +527,6 @@ angular.module('myApp.controllers', ['myApp.i18n'])
   })
 
   .controller('AppIMController', function ($q, qSync, $scope, $location, $routeParams, $modal, $rootScope, $modalStack, MtpApiManager, AppUsersManager, AppChatsManager, AppMessagesManager, AppPeersManager, ContactsSelectService, ChangelogNotifyService, ErrorService, AppRuntimeManager, HttpsMigrateService, LayoutSwitchService, LocationParamsService, AppStickersManager) {
-
-    document.getScroll = function() {
-      if (window.pageYOffset != undefined) {
-        return [pageXOffset, pageYOffset];
-      } else {
-        var sx, sy, d = document,
-            r = d.documentElement,
-            b = d.body;
-        sx = r.scrollLeft || b.scrollLeft || 0;
-        sy = r.scrollTop || b.scrollTop || 0;
-        return [sx, sy];
-      }
-    }
-
-
-    var y = 150;
-    function handleKeydown(e) {
-      switch(e.key) {
-        case "SoftLeft":
-          var scroll = document.getScroll();
-          window.scroll(0, scroll[1]+20);
-          break;
-        case "SoftRight":
-          var scroll = document.getScroll();
-          window.scroll(0, scroll[1]-20);
-          break;
-        case "BrowserBack":
-        case "Backspace":
-          var mobile_im = document.getElementById('mobile_im');
-          if (mobile_im !== null) {
-            var exitApp = true;
-            for(var x in mobile_im.children) {
-              if (mobile_im.children[x].classList !== undefined) {
-                if (mobile_im.children[x].classList.contains('active')) {
-                  exitApp = false;
-                }
-              }
-            }
-            if (exitApp) {
-              window.close()
-            }
-          }
-          break;
-        case 'Call':
-          break;
-      }
-    }
-    document.activeElement.addEventListener('keydown', handleKeydown);
     
     $scope.$on('$routeUpdate', updateCurDialog)
 
@@ -610,12 +594,18 @@ angular.module('myApp.controllers', ['myApp.i18n'])
     }
 
     $scope.openSettings = function () {
-      $modal.open({
+      var modal = $modal.open({
         templateUrl: templateUrl('settings_modal'),
         controller: 'SettingsModalController',
         windowClass: 'settings_modal_window mobile_modal',
         backdrop: 'single'
       })
+
+      modal.result.then(function () {
+        __exitAppCb();
+      }).catch(__exitAppCb)
+
+      modal.opened.then(__stayInAppCb).catch(__exitAppCb)
     }
 
     $scope.isHistoryPeerGroup = function () {
@@ -662,13 +652,19 @@ angular.module('myApp.controllers', ['myApp.i18n'])
           var scope = $rootScope.$new()
           scope.userIDs = userIDs
 
-          $modal.open({
+          var modal = $modal.open({
             templateUrl: templateUrl('chat_create_modal'),
             controller: 'ChatCreateModalController',
             scope: scope,
             windowClass: 'md_simple_modal_window mobile_modal',
             backdrop: 'single'
           })
+
+          modal.result.then(function () {
+            __exitAppCb();
+          }).catch(__exitAppCb)
+
+          modal.opened.then(__stayInAppCb).catch(__exitAppCb)
         }
       })
     }
@@ -1860,11 +1856,12 @@ angular.module('myApp.controllers', ['myApp.i18n'])
           $scope.historyState.canEdit = AppMessagesManager.canEditMessage(messageID)
           $scope.historyState.canReport = AppMessagesManager.canReportMessage(messageID)
 
-          $modal.open({
+          var modal = $modal.open({
             templateUrl: templateUrl('message_actions_modal'),
             windowClass: 'message_actions_modal_window',
             scope: $scope.$new()
           }).result.then(function (action) {
+            __exitAppCb();
             switch (action) {
               case 'reply':
                 selectedReply(messageID)
@@ -1892,7 +1889,10 @@ angular.module('myApp.controllers', ['myApp.i18n'])
                 toggleMessage(messageID)
                 break
             }
-          })
+          }).catch(__exitAppCb)
+
+          modal.opened.then(__stayInAppCb).catch(__exitAppCb)
+          
           return false
         }
       }
@@ -2106,12 +2106,13 @@ angular.module('myApp.controllers', ['myApp.i18n'])
         })
       }
       if (selectedMessageIDs.length) {
-        $modal.open({
+        var modal = $modal.open({
           templateUrl: templateUrl('report_msgs_modal'),
           controller: 'ReportMessagesModalController',
           windowClass: 'md_simple_modal_window mobile_modal',
           scope: $scope.$new()
         }).result.then(function (inputReason) {
+          __exitAppCb();
           selectedCancel()
           AppMessagesManager.reportMessages(selectedMessageIDs, inputReason).then(function () {
             var toastData = toaster.pop({
@@ -2124,7 +2125,9 @@ angular.module('myApp.controllers', ['myApp.i18n'])
               showCloseButton: false
             })
           })
-        })
+        }).catch(__exitAppCb)
+
+        modal.opened.then(__stayInAppCb).catch(__exitAppCb)
       }
     }
 
@@ -3941,16 +3944,19 @@ angular.module('myApp.controllers', ['myApp.i18n'])
         last_name: $scope.user.last_name
       }
 
-      $modal.open({
+      var modal = $modal.open({
         templateUrl: templateUrl(edit ? 'edit_contact_modal' : 'import_contact_modal'),
         controller: 'ImportContactModalController',
         windowClass: 'md_simple_modal_window mobile_modal',
         scope: scope
       }).result.then(function (foundUserID) {
+        __exitAppCb();
         if ($scope.userID == foundUserID) {
           $scope.user = AppUsersManager.getUser($scope.userID)
         }
-      })
+      }).catch(__exitAppCb)
+
+      modal.opened.then(__stayInAppCb).catch(__exitAppCb)
     }
 
     $scope.deleteContact = function () {
@@ -4113,12 +4119,18 @@ angular.module('myApp.controllers', ['myApp.i18n'])
       var scope = $rootScope.$new()
       scope.chatID = $scope.chatID
 
-      $modal.open({
+      var modal = $modal.open({
         templateUrl: templateUrl('chat_invite_link_modal'),
         controller: 'ChatInviteLinkModalController',
         scope: scope,
         windowClass: 'md_simple_modal_window'
       })
+
+      modal.result.then(function () {
+        __exitAppCb();
+      }).catch(__exitAppCb)
+
+      modal.opened.then(__stayInAppCb).catch(__exitAppCb)
     }
 
     $scope.photo = {}
@@ -4157,12 +4169,18 @@ angular.module('myApp.controllers', ['myApp.i18n'])
       var scope = $rootScope.$new()
       scope.chatID = $scope.chatID
 
-      $modal.open({
+      var modal = $modal.open({
         templateUrl: templateUrl('chat_edit_modal'),
         controller: 'ChatEditModalController',
         scope: scope,
         windowClass: 'md_simple_modal_window mobile_modal'
       })
+
+      modal.result.then(function () {
+        __exitAppCb();
+      }).catch(__exitAppCb)
+
+      modal.opened.then(__stayInAppCb).catch(__exitAppCb)
     }
 
     $scope.hasRights = function (action) {
@@ -4284,12 +4302,18 @@ angular.module('myApp.controllers', ['myApp.i18n'])
       var scope = $rootScope.$new()
       scope.chatID = $scope.chatID
 
-      $modal.open({
+      var modal = $modal.open({
         templateUrl: templateUrl('chat_invite_link_modal'),
         controller: 'ChatInviteLinkModalController',
         scope: scope,
         windowClass: 'md_simple_modal_window'
       })
+
+      modal.result.then(function () {
+        __exitAppCb();
+      }).catch(__exitAppCb)
+
+      modal.opened.then(__stayInAppCb).catch(__exitAppCb)
 
       return cancelEvent($event)
     }
@@ -4330,12 +4354,18 @@ angular.module('myApp.controllers', ['myApp.i18n'])
       var scope = $rootScope.$new()
       scope.chatID = $scope.chatID
 
-      $modal.open({
+      var modal = $modal.open({
         templateUrl: templateUrl($scope.isMegagroup ? 'megagroup_edit_modal' : 'channel_edit_modal'),
         controller: 'ChannelEditModalController',
         scope: scope,
         windowClass: 'md_simple_modal_window mobile_modal'
       })
+
+      modal.result.then(function () {
+        __exitAppCb();
+      }).catch(__exitAppCb)
+
+      modal.opened.then(__stayInAppCb).catch(__exitAppCb)
     }
 
     $scope.goToHistory = function () {
@@ -4420,14 +4450,26 @@ angular.module('myApp.controllers', ['myApp.i18n'])
       })
 
       modal.result['finally'](updatePasswordState)
+
+      modal.result.then(function () {
+        __exitAppCb();
+      }).catch(__exitAppCb)
+
+      modal.opened.then(__stayInAppCb).catch(__exitAppCb)
     }
 
     $scope.showSessions = function () {
-      $modal.open({
+      var modal = $modal.open({
         templateUrl: templateUrl('sessions_list_modal'),
         controller: 'SessionsListModalController',
         windowClass: 'md_simple_modal_window mobile_modal'
       })
+
+      modal.result.then(function () {
+        __exitAppCb();
+      }).catch(__exitAppCb)
+
+      modal.opened.then(__stayInAppCb).catch(__exitAppCb)
     }
 
     function updatePasswordState () {
@@ -4504,19 +4546,31 @@ angular.module('myApp.controllers', ['myApp.i18n'])
     }
 
     $scope.editProfile = function () {
-      $modal.open({
+      var modal = $modal.open({
         templateUrl: templateUrl('profile_edit_modal'),
         controller: 'ProfileEditModalController',
         windowClass: 'md_simple_modal_window mobile_modal'
       })
+
+      modal.result.then(function () {
+        __exitAppCb();
+      }).catch(__exitAppCb)
+
+      modal.opened.then(__stayInAppCb).catch(__exitAppCb)
     }
 
     $scope.changeUsername = function () {
-      $modal.open({
+      var modal = $modal.open({
         templateUrl: templateUrl('username_edit_modal'),
         controller: 'UsernameEditModalController',
         windowClass: 'md_simple_modal_window mobile_modal'
       })
+
+      modal.result.then(function () {
+        __exitAppCb();
+      }).catch(__exitAppCb)
+
+      modal.opened.then(__stayInAppCb).catch(__exitAppCb)
     }
 
     $scope.terminateSessions = function () {
@@ -4677,11 +4731,17 @@ angular.module('myApp.controllers', ['myApp.i18n'])
     }
 
     $scope.changeUsername = function () {
-      $modal.open({
+      var modal = $modal.open({
         templateUrl: templateUrl('username_edit_modal'),
         controller: 'UsernameEditModalController',
         windowClass: 'md_simple_modal_window mobile_modal'
       })
+
+      modal.result.then(function () {
+        __exitAppCb();
+      }).catch(__exitAppCb)
+
+      modal.opened.then(__stayInAppCb).catch(__exitAppCb)
     }
   })
 

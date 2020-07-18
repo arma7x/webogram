@@ -7,6 +7,7 @@ var st = require('st')
 var del = require('del')
 var swPrecache = require('sw-precache')
 var Server = require('karma').Server
+var child_process = require("child_process")
 
 // The generated file is being created at src
 // so it can be fetched by usemin.
@@ -350,3 +351,18 @@ gulp.task('package', gulp.series('cleanup-dist'))
 gulp.task('publish', gulp.series('add-appcache-manifest', 'generate-service-worker'))
 
 gulp.task('default', gulp.series('build'))
+
+gulp.task('zip', function (done) {
+  child_process.exec("cd app && zip -r ../app/application_$(date +'%Y%m%d%H%M').zip ./*", function (error, stdout, stderr) {
+    if (error) {
+      console.log(`error: ${error.message}`);
+      done();
+    }
+    if (stderr) {
+      console.log(`stderr: ${stderr}`);
+      done();
+    }
+    console.log(`stdout: ${stdout}`);
+    done();
+  });
+})

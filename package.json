@@ -22,7 +22,8 @@
     "clean": "gulp clean",
     "start": "gulp watch",
     "test": "gulp test",
-    "build": "gulp publish"
+    "build": "gulp publish",
+    "zip": "gulp zip"
   },
   "repository": {
     "type": "git",

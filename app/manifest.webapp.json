@@ -1,7 +1,7 @@
 {
-  "name": "Telegram",
-  "description": "Telegram Web App.\nMore info & source code here: https://github.com/zhukov/webogram",
-  "short_name": "Telegram",
+  "name": "KaiTGram",
+  "description": "Unofficial Telegram Web App.\nMore info & source code here: https://github.com/zhukov/webogram",
+  "short_name": "KaiTGram",
   "display": "standalone",
   "theme_color": "#497495",
   "gcm_sender_id": "122867383838",

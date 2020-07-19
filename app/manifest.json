@@ -1,8 +1,8 @@
 {
-  "name": "Telegram",
-  "description": "Telegram Web App.\nMore info & source code here: https://github.com/zhukov/webogram",
+  "name": "KaiTGram",
+  "description": "Unofficial Telegram Web App.\nMore info & source code here: https://github.com/zhukov/webogram",
   "version": "0.7.0",
-  "short_name": "Telegram",
+  "short_name": "KaiTGram",
   "manifest_version": 2,
   "app": {
     "background": {

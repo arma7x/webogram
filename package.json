@@ -1,12 +1,12 @@
 {
-  "name": "Telegram",
-  "description": "Telegram Web App.\nMore info & source code here: https://github.com/zhukov/webogram",
+  "name": "KaiTGram",
+  "description": "Unofficial Telegram Web App.\nMore info & source code here: https://github.com/zhukov/webogram",
   "version": "0.7.0",
   "main": "app/index.html",
   "single-instance": true,
   "dom_storage_quota": 40,
   "window": {
-    "title": "Telegram",
+    "title": "KaiTGram",
     "icon": "app/img/icons/icon128.png",
     "toolbar": false,
     "frame": true,

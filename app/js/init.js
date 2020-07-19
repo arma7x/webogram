@@ -1,13 +1,15 @@
 var __EXITAPP = true
 
 function __stayInAppCb() {
-  console.log('__EXITAPP = false')
   __EXITAPP = false
 }
 
-function __exitAppCb(trace) {
-  console.log('__EXITAPP = true')
+function __exitAppCb() {
   __EXITAPP = true
+}
+
+function __getExitStatus() {
+  return __EXITAPP
 }
 
 document.getScroll = function() {
@@ -35,30 +37,20 @@ function handleKeydown(e) {
       break
     case "BrowserBack":
     case "Backspace":
-      mobile_im = document.getElementById('mobile_im')
-      if (mobile_im !== null) {
-        // __EXITAPP = true
-        for(var x in mobile_im.children) {
-          if (mobile_im.children[x].classList !== undefined) {
-            if (mobile_im.children[x].classList.contains('active')) {
-              __EXITAPP = false
-              break
-            }
-          }
-        }
-      }
-      //if (document.hasFocus()) {
-      //  document.activeElement.blur()
-      //  __EXITAPP = false
-      //}
-      if (__EXITAPP) {
+      console.log(document.location.hash, __EXITAPP);
+      if (document.location.hash === '#/login' && __EXITAPP) {
         window.close()
+      } else if (document.location.hash === '#/im' && __EXITAPP) {
+        window.close()
+      } else {
+        __EXITAPP = true
       }
       break
     case 'Call':
-      $("input").blur();
+      $("input").blur()
       break
   }
+  return
 }
 document.activeElement.addEventListener('keydown', handleKeydown)
 

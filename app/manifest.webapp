@@ -18,6 +18,8 @@
     "push-register": "/index.html"
   }, {
     "notification": "/index.html"
+  }, {
+    "serviceworker-notification": "/index.html"
   }],
   "permissions": {
     "serviceworker": {

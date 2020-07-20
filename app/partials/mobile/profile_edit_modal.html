@@ -31,10 +31,10 @@
     <form class="modal_simple_form" ng-submit="updateProfile()" my-vertical-position="0.3">
 
       <div class="form-group" ng-class="{'has-error': error.field == 'first_name'}">
-        <input class="form-control input-lg" my-focused type="text" placeholder="{{'profile_edit_first_name' | i18n}}" ng-model="profile.first_name"  name="first_name"/>
+        <input id="profile_edit_modal_first_name" class="form-control input-lg" my-focused type="text" placeholder="{{'profile_edit_first_name' | i18n}}" ng-model="profile.first_name"  name="first_name"/>
       </div>
       <div class="form-group" ng-class="{'has-error': error.field == 'last_name'}">
-        <input class="form-control input-lg" type="text" placeholder="{{'profile_edit_last_name' | i18n}}" ng-model="profile.last_name"/>
+        <input id="profile_edit_modal_last_name" class="form-control input-lg" type="text" placeholder="{{'profile_edit_last_name' | i18n}}" ng-model="profile.last_name"/>
       </div>
 
     </form>

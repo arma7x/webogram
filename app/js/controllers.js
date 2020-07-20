@@ -61,6 +61,7 @@ angular.module('myApp.controllers', ['myApp.i18n'])
     $scope.about = {}
 
     $scope.chooseCountry = function () {
+
       var modal = $modal.open({
         templateUrl: templateUrl('country_select_modal'),
         controller: 'CountrySelectModalController',
@@ -68,8 +69,34 @@ angular.module('myApp.controllers', ['myApp.i18n'])
         backdrop: 'single'
       })
 
-      modal.result.then(selectCountry).catch(__exitAppCb)
-      modal.opened.then(__stayInAppCb).catch(__exitAppCb)
+      modal.result
+      .then(function(country) {
+        selectCountry(country)
+        __popModalStack()
+      })
+      .catch(function() {
+        __popModalStack()
+      })
+
+      modal.opened
+      .then(function() {
+        __pushModalStack(modal)
+        setTimeout(function() {
+
+          var country_select_modal_search = null
+          country_select_modal_search = document.getElementById('country_select_modal_search')
+          country_select_modal_search.addEventListener('focus', function(e) {
+            __INPUTFOCUSID = e.target.id
+            __INPUTFOCUS = true
+          })
+
+          country_select_modal_search.addEventListener('blur', function(e) {
+            __INPUTFOCUSID = null
+            __INPUTFOCUS = false
+          })
+        }, 300)
+      })
+      .catch(__popModalStack)
     }
 
     function initPhoneCountry () {
@@ -117,7 +144,6 @@ angular.module('myApp.controllers', ['myApp.i18n'])
     }
 
     function selectCountry (country) {
-      __exitAppCb();
       selectedCountry = country
       if ($scope.credentials.phone_country != country.code) {
         $scope.credentials.phone_country = country.code
@@ -395,15 +421,19 @@ angular.module('myApp.controllers', ['myApp.i18n'])
         })
 
         modal.result.then(function (result) {
-          __exitAppCb();
+          __popModalStack();
           if (result && result.user) {
             saveAuth(result)
           } else {
             $scope.canReset = true
           }
-        }).catch(__exitAppCb)
+        }).catch(__popModalStack)
 
-        modal.opened.then(__stayInAppCb).catch(__exitAppCb)
+        modal.opened
+        .then(function() {
+          __pushModalStack(modal)
+        })
+        .catch(__popModalStack)
       }, function (error) {
         switch (error.type) {
           case 'PASSWORD_EMPTY':
@@ -535,8 +565,12 @@ angular.module('myApp.controllers', ['myApp.i18n'])
         backdrop: 'single'
       })
 
-      modal.result.then(__exitAppCb).catch(__exitAppCb)
-      modal.opened.then(__stayInAppCb).catch(__exitAppCb)
+      modal.result.then(__popModalStack).catch(__popModalStack)
+      modal.opened
+      .then(function() {
+        __pushModalStack(modal)
+      })
+      .catch(__popModalStack)
     }
 
     $scope.isHistoryPeerGroup = function () {
@@ -591,8 +625,12 @@ angular.module('myApp.controllers', ['myApp.i18n'])
             backdrop: 'single'
           })
 
-          modal.result.then(__exitAppCb).catch(__exitAppCb)
-          modal.opened.then(__stayInAppCb).catch(__exitAppCb)
+          modal.result.then(__popModalStack).catch(__popModalStack)
+          modal.opened
+          .then(function() {
+            __pushModalStack(modal)
+          })
+          .catch(__popModalStack)
         }
       })
     }
@@ -604,7 +642,7 @@ angular.module('myApp.controllers', ['myApp.i18n'])
             peerString: AppUsersManager.getUserString(foundContact)
           })
         }
-      })//.catch(__exitAppCb)
+      })//.catch(__popModalStack)
     }
 
     $scope.searchClear = function () {
@@ -1789,7 +1827,7 @@ angular.module('myApp.controllers', ['myApp.i18n'])
             windowClass: 'message_actions_modal_window',
             scope: $scope.$new()
           }).result.then(function (action) {
-            __exitAppCb();
+            __popModalStack();
             switch (action) {
               case 'reply':
                 selectedReply(messageID)
@@ -1817,10 +1855,14 @@ angular.module('myApp.controllers', ['myApp.i18n'])
                 toggleMessage(messageID)
                 break
             }
-          }).catch(__exitAppCb)
+          }).catch(__popModalStack)
 
-          modal.opened.then(__stayInAppCb).catch(__exitAppCb)
-          
+          modal.opened
+          .then(function() {
+            __pushModalStack(modal)
+          })
+          .catch(__popModalStack)
+
           return false
         }
       }
@@ -2040,7 +2082,7 @@ angular.module('myApp.controllers', ['myApp.i18n'])
           windowClass: 'md_simple_modal_window mobile_modal',
           scope: $scope.$new()
         }).result.then(function (inputReason) {
-          __exitAppCb();
+          __popModalStack();
           selectedCancel()
           AppMessagesManager.reportMessages(selectedMessageIDs, inputReason).then(function () {
             var toastData = toaster.pop({
@@ -2053,9 +2095,13 @@ angular.module('myApp.controllers', ['myApp.i18n'])
               showCloseButton: false
             })
           })
-        }).catch(__exitAppCb)
+        }).catch(__popModalStack)
 
-        modal.opened.then(__stayInAppCb).catch(__exitAppCb)
+        modal.opened
+        .then(function() {
+          __pushModalStack(modal)
+        })
+        .catch(__popModalStack)
       }
     }
 
@@ -3878,13 +3924,17 @@ angular.module('myApp.controllers', ['myApp.i18n'])
         windowClass: 'md_simple_modal_window mobile_modal',
         scope: scope
       }).result.then(function (foundUserID) {
-        __exitAppCb();
+        __popModalStack();
         if ($scope.userID == foundUserID) {
           $scope.user = AppUsersManager.getUser($scope.userID)
         }
-      }).catch(__exitAppCb)
+      }).catch(__popModalStack)
 
-      modal.opened.then(__stayInAppCb).catch(__exitAppCb)
+      modal.opened
+      .then(function() {
+        __pushModalStack(modal)
+      })
+      .catch(__popModalStack)
     }
 
     $scope.deleteContact = function () {
@@ -4054,8 +4104,12 @@ angular.module('myApp.controllers', ['myApp.i18n'])
         windowClass: 'md_simple_modal_window'
       })
 
-      modal.result.then(__exitAppCb).catch(__exitAppCb)
-      modal.opened.then(__stayInAppCb).catch(__exitAppCb)
+      modal.result.then(__popModalStack).catch(__popModalStack)
+      modal.opened
+      .then(function() {
+        __pushModalStack(modal)
+      })
+      .catch(__popModalStack)
     }
 
     $scope.photo = {}
@@ -4101,8 +4155,12 @@ angular.module('myApp.controllers', ['myApp.i18n'])
         windowClass: 'md_simple_modal_window mobile_modal'
       })
 
-      modal.result.then(__exitAppCb).catch(__exitAppCb)
-      modal.opened.then(__stayInAppCb).catch(__exitAppCb)
+      modal.result.then(__popModalStack).catch(__popModalStack)
+      modal.opened
+      .then(function() {
+        __pushModalStack(modal)
+      })
+      .catch(__popModalStack)
     }
 
     $scope.hasRights = function (action) {
@@ -4231,8 +4289,12 @@ angular.module('myApp.controllers', ['myApp.i18n'])
         windowClass: 'md_simple_modal_window'
       })
 
-      modal.result.then(__exitAppCb).catch(__exitAppCb)
-      modal.opened.then(__stayInAppCb).catch(__exitAppCb)
+      modal.result.then(__popModalStack).catch(__popModalStack)
+      modal.opened
+      .then(function() {
+        __pushModalStack(modal)
+      })
+      .catch(__popModalStack)
 
       return cancelEvent($event)
     }
@@ -4280,8 +4342,12 @@ angular.module('myApp.controllers', ['myApp.i18n'])
         windowClass: 'md_simple_modal_window mobile_modal'
       })
 
-      modal.result.then(__exitAppCb).catch(__exitAppCb)
-      modal.opened.then(__stayInAppCb).catch(__exitAppCb)
+      modal.result.then(__popModalStack).catch(__popModalStack)
+      modal.opened
+      .then(function() {
+        __pushModalStack(modal)
+      })
+      .catch(__popModalStack)
     }
 
     $scope.goToHistory = function () {
@@ -4367,8 +4433,12 @@ angular.module('myApp.controllers', ['myApp.i18n'])
 
       modal.result['finally'](updatePasswordState)
 
-      modal.result.then(__exitAppCb).catch(__exitAppCb)
-      modal.opened.then(__stayInAppCb).catch(__exitAppCb)
+      modal.result.then(__popModalStack).catch(__popModalStack)
+      modal.opened
+      .then(function() {
+        __pushModalStack(modal)
+      })
+      .catch(__popModalStack)
     }
 
     $scope.showSessions = function () {
@@ -4378,8 +4448,12 @@ angular.module('myApp.controllers', ['myApp.i18n'])
         windowClass: 'md_simple_modal_window mobile_modal'
       })
 
-      modal.result.then(__exitAppCb).catch(__exitAppCb)
-      modal.opened.then(__stayInAppCb).catch(__exitAppCb)
+      modal.result.then(__popModalStack).catch(__popModalStack)
+      modal.opened
+      .then(function() {
+        __pushModalStack(modal)
+      })
+      .catch(__popModalStack)
     }
 
     function updatePasswordState () {
@@ -4462,8 +4536,12 @@ angular.module('myApp.controllers', ['myApp.i18n'])
         windowClass: 'md_simple_modal_window mobile_modal'
       })
 
-      modal.result.then(__exitAppCb).catch(__exitAppCb)
-      modal.opened.then(__stayInAppCb).catch(__exitAppCb)
+      modal.result.then(__popModalStack).catch(__popModalStack)
+      modal.opened
+      .then(function() {
+        __pushModalStack(modal)
+      })
+      .catch(__popModalStack)
     }
 
     $scope.changeUsername = function () {
@@ -4473,8 +4551,12 @@ angular.module('myApp.controllers', ['myApp.i18n'])
         windowClass: 'md_simple_modal_window mobile_modal'
       })
 
-      modal.result.then(__exitAppCb).catch(__exitAppCb)
-      modal.opened.then(__stayInAppCb).catch(__exitAppCb)
+      modal.result.then(__popModalStack).catch(__popModalStack)
+      modal.opened
+      .then(function() {
+        __pushModalStack(modal)
+      })
+      .catch(__popModalStack)
     }
 
     $scope.terminateSessions = function () {
@@ -4641,8 +4723,12 @@ angular.module('myApp.controllers', ['myApp.i18n'])
         windowClass: 'md_simple_modal_window mobile_modal'
       })
 
-      modal.result.then(__exitAppCb).catch(__exitAppCb)
-      modal.opened.then(__stayInAppCb).catch(__exitAppCb)
+      modal.result.then(__popModalStack).catch(__popModalStack)
+      modal.opened
+      .then(function() {
+        __pushModalStack(modal)
+      })
+      .catch(__popModalStack)
     }
   })
 

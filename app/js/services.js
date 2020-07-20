@@ -308,8 +308,10 @@ angular.module('myApp.services', ['myApp.i18n', 'izhukov.utils'])
         windowClass: 'user_modal_window mobile_modal',
         backdrop: 'single'
       })
-      //modalInstance.result.then(__exitAppCb).catch(__exitAppCb)
-      modalInstance.opened.then(__stayInAppCb).catch(__exitAppCb)
+      modalInstance.result.then(__popModalStack).catch(__popModalStack)
+      modalInstance.opened.then(function() {
+        __pushModalStack(modalInstance)
+      }).catch(__popModalStack)
     }
 
     function importContact (phone, firstName, lastName) {
@@ -406,14 +408,17 @@ angular.module('myApp.services', ['myApp.i18n', 'izhukov.utils'])
         windowClass: 'md_simple_modal_window mobile_modal'
       })
 
-      modal.opened.then(__stayInAppCb).catch(__exitAppCb)
+      modal.opened.then(function() {
+        __pushModalStack(modal)
+      }).catch(__popModalStack)
+
       return modal.result.then(function (foundUserID) {
-        //__exitAppCb()
+        __popModalStack()
         if (!foundUserID) {
           return $q.reject()
         }
         return foundUserID
-      })//.catch(__exitAppCb)
+      }).catch(__popModalStack)
     }
 
     function setUserStatus (userID, offline) {
@@ -540,8 +545,12 @@ angular.module('myApp.services', ['myApp.i18n', 'izhukov.utils'])
         controller: 'PhonebookModalController',
         windowClass: 'phonebook_modal_window mobile_modal'
       })
-      //modal.result.then(__exitAppCb).catch(__exitAppCb)
-      modal.opened.then(__stayInAppCb).catch(__exitAppCb)
+      modal.result.then(__popModalStack).catch(__popModalStack)
+
+      modal.opened.then(function() {
+        __pushModalStack(modal)
+      }).catch(__popModalStack)
+
       return modal
     }
 
@@ -848,8 +857,10 @@ angular.module('myApp.services', ['myApp.i18n', 'izhukov.utils'])
           scope: scope,
           windowClass: 'chat_modal_window channel_modal_window mobile_modal'
         })
-        //modalInstance.result.then(__exitAppCb).catch(__exitAppCb)
-        modalInstance.opened.then(__stayInAppCb).catch(__exitAppCb)
+        modalInstance.result.then(__popModalStack).catch(__popModalStack)
+        modalInstance.opened.then(function() {
+          __pushModalStack(modalInstance)
+        }).catch(__popModalStack)
       } else {
         var modalInstance = $modal.open({
           templateUrl: templateUrl('chat_modal'),
@@ -857,8 +868,10 @@ angular.module('myApp.services', ['myApp.i18n', 'izhukov.utils'])
           scope: scope,
           windowClass: 'chat_modal_window mobile_modal'
         })
-        //modalInstance.result.then(__exitAppCb).catch(__exitAppCb)
-        modalInstance.opened.then(__stayInAppCb).catch(__exitAppCb)
+        modalInstance.result.then(__popModalStack).catch(__popModalStack)
+        modalInstance.opened.then(function() {
+          __pushModalStack(modalInstance)
+        }).catch(__popModalStack)
       }
     }
 
@@ -1689,8 +1702,10 @@ angular.module('myApp.services', ['myApp.i18n', 'izhukov.utils'])
         scope: scope,
         windowClass: 'photo_modal_window'
       })
-      //modalInstance.result.then(__exitAppCb).catch(__exitAppCb)
-      modalInstance.opened.then(__stayInAppCb).catch(__exitAppCb)
+      modalInstance.result.then(__popModalStack).catch(__popModalStack)
+      modalInstance.opened.then(function() {
+        __pushModalStack(modalInstance)
+      }).catch(__popModalStack)
     }
 
     function downloadPhoto (photoID) {
@@ -1848,8 +1863,10 @@ angular.module('myApp.services', ['myApp.i18n', 'izhukov.utils'])
         scope: scope,
         windowClass: 'photo_modal_window'
       })
-      //modal.result.then(__exitAppCb).catch(__exitAppCb)
-      modal.opened.then(__stayInAppCb).catch(__exitAppCb)
+      modal.result.then(__popModalStack).catch(__popModalStack)
+      modal.opened.then(function() {
+        __pushModalStack(modal)
+      }).catch(__popModalStack)
     }
 
     function wrapForHistory (webPageID) {
@@ -1962,8 +1979,10 @@ angular.module('myApp.services', ['myApp.i18n', 'izhukov.utils'])
         scope: scope,
         windowClass: 'photo_modal_window mobile_modal'
       })
-      //modal.result.then(__exitAppCb).catch(__exitAppCb)
-      modal.opened.then(__stayInAppCb).catch(__exitAppCb)
+      modal.result.then(__popModalStack).catch(__popModalStack)
+      modal.opened.then(function() {
+        __pushModalStack(modal)
+      }).catch(__popModalStack)
     }
 
     function wrapForHistory (gameID) {
@@ -2302,8 +2321,10 @@ angular.module('myApp.services', ['myApp.i18n', 'izhukov.utils'])
         scope: scope,
         windowClass: 'document_modal_window'
       })
-      //modalInstance.result.then(__exitAppCb).catch(__exitAppCb)
-      modalInstance.opened.then(__stayInAppCb).catch(__exitAppCb)
+      modalInstance.result.then(__popModalStack).catch(__popModalStack)
+      modalInstance.opened.then(function() {
+        __pushModalStack(modalInstance)
+      }).catch(__popModalStack)
     }
 
     function saveDocFile (docID) {
@@ -2362,8 +2383,10 @@ angular.module('myApp.services', ['myApp.i18n', 'izhukov.utils'])
         scope: scope,
         windowClass: 'video_modal_window'
       })
-      //modal.result.then(__exitAppCb).catch(__exitAppCb)
-      modal.opened.then(__stayInAppCb).catch(__exitAppCb)
+      modal.result.then(__popModalStack).catch(__popModalStack)
+      modal.opened.then(function() {
+        __pushModalStack(modal)
+      }).catch(__popModalStack)
       return modal
     }
 
@@ -2739,8 +2762,10 @@ angular.module('myApp.services', ['myApp.i18n', 'izhukov.utils'])
         scope: scope,
         windowClass: 'stickerset_modal_window mobile_modal'
       })
-      //modal.result.then(__exitAppCb).catch(__exitAppCb)
-      modal.opened.then(__stayInAppCb).catch(__exitAppCb)
+      modal.result.then(__popModalStack).catch(__popModalStack)
+      modal.opened.then(function() {
+        __pushModalStack(modal)
+      }).catch(__popModalStack)
     }
 
     function getStickerSetsHash (stickerSets) {
@@ -3893,8 +3918,10 @@ angular.module('myApp.services', ['myApp.i18n', 'izhukov.utils'])
             windowClass: 'settings_modal_window mobile_modal',
             backdrop: 'single'
           })
-          //modal.result.then(__exitAppCb).catch(__exitAppCb)
-          modal.opened.then(__stayInAppCb).catch(__exitAppCb)
+          modal.result.then(__popModalStack).catch(__popModalStack)
+          modal.opened.then(function() {
+            __pushModalStack(modal)
+          }).catch(__popModalStack)
         })
         return
       }
@@ -4410,11 +4437,13 @@ angular.module('myApp.services', ['myApp.i18n', 'izhukov.utils'])
         windowClass: options.windowClass || 'error_modal_window'
       })
 
-      //modal.result.then(__exitAppCb).catch(__exitAppCb)
+      modal.result.then(__popModalStack).catch(__popModalStack)
       modal.result['finally'](function () {
         shownBoxes--
       })
-      modal.opened.then(__stayInAppCb).catch(__exitAppCb)
+      modal.opened.then(function() {
+        __pushModalStack(modal)
+      }).catch(__popModalStack)
 
       return modal
     }
@@ -4438,8 +4467,10 @@ angular.module('myApp.services', ['myApp.i18n', 'izhukov.utils'])
         scope: scope,
         windowClass: options.windowClass || 'confirm_modal_window'
       })
-      //modal.result.then(__exitAppCb).catch(__exitAppCb)
-      modal.opened.then(__stayInAppCb).catch(__exitAppCb)
+      modal.result.then(__popModalStack).catch(__popModalStack)
+      modal.opened.then(function() {
+        __pushModalStack(modal)
+      }).catch(__popModalStack)
 
       return modal.result
     }
@@ -4479,8 +4510,10 @@ angular.module('myApp.services', ['myApp.i18n', 'izhukov.utils'])
         windowClass: 'peer_select_window mobile_modal',
         backdrop: 'single'
       })
-      //modal.result.then(__exitAppCb).catch(__exitAppCb)
-      modal.opened.then(__stayInAppCb).catch(__exitAppCb)
+      modal.result.then(__popModalStack).catch(__popModalStack)
+      modal.opened.then(function() {
+        __pushModalStack(modal)
+      }).catch(__popModalStack)
       return modal.result
     }
 
@@ -4506,8 +4539,10 @@ angular.module('myApp.services', ['myApp.i18n', 'izhukov.utils'])
         windowClass: 'peer_select_window mobile_modal',
         backdrop: 'single'
       })
-      //modal.result.then(__exitAppCb).catch(__exitAppCb)
-      modal.opened.then(__stayInAppCb).catch(__exitAppCb)
+      modal.result.then(__popModalStack).catch(__popModalStack)
+      modal.opened.then(function() {
+        __pushModalStack(modal)
+      }).catch(__popModalStack)
       return modal.result
     }
 
@@ -4535,8 +4570,10 @@ angular.module('myApp.services', ['myApp.i18n', 'izhukov.utils'])
         windowClass: 'contacts_modal_window mobile_modal',
         backdrop: 'single'
       })
-      //modal.result.then(__exitAppCb).catch(__exitAppCb)
-      modal.opened.then(__stayInAppCb).catch(__exitAppCb)
+      modal.result.then(__popModalStack).catch(__popModalStack)
+      modal.opened.then(function() {
+        __pushModalStack(modal)
+      }).catch(__popModalStack)
       return modal.result
     }
 
@@ -4597,8 +4634,10 @@ angular.module('myApp.services', ['myApp.i18n', 'izhukov.utils'])
         scope: $scope,
         windowClass: 'changelog_modal_window mobile_modal'
       })
-      //modal.result.then(__exitAppCb).catch(__exitAppCb)
-      modal.opened.then(__stayInAppCb).catch(__exitAppCb)
+      modal.result.then(__popModalStack).catch(__popModalStack)
+      modal.opened.then(function() {
+        __pushModalStack(modal)
+      }).catch(__popModalStack)
     }
 
     return {

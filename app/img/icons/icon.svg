@@ -7,7 +7,7 @@
 	<stop  offset="0" style="stop-color:#1D93D2"/>
 	<stop  offset="1" style="stop-color:#38B0E3"/>
 </linearGradient>
-<circle fill="url(#SVGID_1_)" stroke="#FFFFFF" stroke-width="28" stroke-miterlimit="10" cx="311.167" cy="311.167" r="292.167"/>
+<circle fill="#868686" stroke="#868686" stroke-width="28" stroke-miterlimit="10" cx="311.167" cy="311.167" r="292.167"/>
 <path fill="#C8DAEA" d="M220.759,338.848l35.363,97.88c0,0,4.42,9.157,9.157,9.157s75.147-73.252,75.147-73.252l78.304-151.24
 	l-196.707,92.197L220.759,338.848z"/>
 <path fill="#A9C6D8" d="M267.646,363.949l-6.788,72.147c0,0-2.842,22.102,19.26,0c22.102-22.102,43.257-39.152,43.257-39.152"/>

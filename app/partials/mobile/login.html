@@ -50,13 +50,13 @@
 
           <div class="md-input-group login_phone_code_input_group" ng-class="{'md-input-error': error.field == 'phone'}" my-labeled-input>
             <label class="md-input-label" my-i18n="login_code_input_placeholder"></label>
-            <input autocomplete="off" class="md-input" my-focused name="phone_country" type="tel" ng-model="credentials.phone_country" />
+            <input id="login_phone_country" autocomplete="off" class="md-input" my-focused name="phone_country" type="tel" ng-model="credentials.phone_country" />
           </div>
 
           <div class="md-input-group login_phone_num_input_group" ng-class="{'md-input-error': error.field == 'phone'}" my-labeled-input ng-switch="error.field == 'phone'">
             <label ng-switch-when="true" class="md-input-label" my-i18n="login_incorrect_number"></label>
             <label ng-switch-default class="md-input-label" my-i18n="login_tel_input_placeholder"></label>
-            <input required autocomplete="off" class="md-input" my-focus-on="country_selected" name="phone_number" type="tel" ng-model="credentials.phone_number" />
+            <input id="login_phone_number" required autocomplete="off" class="md-input" my-focus-on="country_selected" name="phone_number" type="tel" ng-model="credentials.phone_number" />
           </div>
 
         </div>
@@ -95,7 +95,7 @@
         <div class="md-input-group md-input-group-centered" ng-class="{'md-input-error': error.field == 'phone_code'}" my-labeled-input ng-switch="error.field == 'phone_code'">
           <label ng-switch-when="true" class="md-input-label" my-i18n="login_incorrect_sms_code"></label>
           <label ng-switch-default class="md-input-label" my-i18n="login_number_input_placeholder"></label>
-          <input autocomplete="off" class="md-input" my-focused name="phone_code" type="tel" ng-model="credentials.phone_code" required />
+          <input id="login_phone_code" autocomplete="off" class="md-input" my-focused name="phone_code" type="tel" ng-model="credentials.phone_code" required />
         </div>
       </form>
 
@@ -106,13 +106,13 @@
         <div class="md-input-group" ng-class="{'md-input-error': error.field == 'first_name'}" my-labeled-input ng-switch="error.field == 'first_name'">
           <label ng-switch-when="true" class="md-input-label" my-i18n="login_incorrect_first_name"></label>
           <label ng-switch-default class="md-input-label" my-i18n="login_first_name"></label>
-          <input autocomplete="off" class="md-input" my-focused name="first_name" type="text" ng-model="credentials.first_name" required />
+          <input id="login_first_name" autocomplete="off" class="md-input" my-focused name="first_name" type="text" ng-model="credentials.first_name" required />
         </div>
 
         <div class="md-input-group" ng-class="{'md-input-error': error.field == 'last_name'}" my-labeled-input ng-switch="error.field == 'last_name'">
           <label ng-switch-when="true" class="md-input-label" my-i18n="login_incorrect_last_name"></label>
           <label ng-switch-default class="md-input-label" my-i18n="login_last_name"></label>
-          <input autocomplete="off" class="md-input" name="last_name" type="text" ng-model="credentials.last_name" />
+          <input id="login_last_name" autocomplete="off" class="md-input" name="last_name" type="text" ng-model="credentials.last_name" />
         </div>
 
       </form>
@@ -124,7 +124,7 @@
         <div class="md-input-group" ng-class="{'md-input-error': error.field == 'password'}" my-labeled-input ng-switch="error.field == 'password'">
           <label ng-switch-when="true" class="md-input-label" my-i18n="login_incorrect_password"></label>
           <label ng-switch-default class="md-input-label" my-i18n="login_password"></label>
-          <input autocomplete="off" class="md-input" my-focused name="password" type="password" ng-model="credentials.password" my-submit-on-enter required />
+          <input id="login_password" autocomplete="off" class="md-input" my-focused name="password" type="password" ng-model="credentials.password" my-submit-on-enter required />
         </div>
 
         <p ng-if="password.hint.length > 0" class="login_form_hint" ng-bind="password.hint"></p>

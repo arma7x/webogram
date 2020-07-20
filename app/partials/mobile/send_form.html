@@ -36,11 +36,11 @@
       </div>
 
       <div class="im_send_dropbox_wrap" my-i18n="im_photos_drop_text"></div>
-      <textarea ng-model="draftMessage.text" class="form-control im_message_field no_outline" dir="auto" ng-trim="false"></textarea>
+      <textarea id="send_form_text" ng-model="draftMessage.text" class="form-control im_message_field no_outline" dir="auto" ng-trim="false"></textarea>
     </div>
 
     <div class="im_attach pull-left">
-      <input type="file" class="im_attach_input" size="28" multiple="true" title="{{'im_media_attach_title' | i18n}}" />
+      <input id="send_form_file" type="file" class="im_attach_input" size="28" multiple="true" title="{{'im_media_attach_title' | i18n}}" />
       <i class="icon icon-paperclip"></i>
     </div>
 

@@ -7,7 +7,7 @@
     <div ng-controller="AppImDialogsController" my-dialogs class="im_dialogs_col_wrap" ng-class="search.query.length > 0 ? 'im_dialogs_col_search' : ''">
       <div class="im_dialogs_panel">
         <div class="im_dialogs_search">
-          <input class="form-control im_dialogs_search_field no_outline" type="search" placeholder="{{'modal_search' | i18n}}" ng-model="search.query" autocomplete="off" />
+          <input id="im_search" class="form-control im_dialogs_search_field no_outline" type="search" placeholder="{{'modal_search' | i18n}}" ng-model="search.query" autocomplete="off" />
           <a class="im_dialogs_search_clear tg_search_clear" ng-click="searchClear()" ng-show="search.query.length">
             <i class="icon icon-search-clear"></i>
           </a>
@@ -23,7 +23,7 @@
           <button ng-if="phonebookAvailable" type="button" class="btn btn-primary btn-block im_dialogs_import_phonebook" ng-click="importPhonebook()" my-i18n="im_import_phonebook"></button>
         </div>
 
-        <ul id="mobile_im" class="nav nav-pills nav-stacked">
+        <ul class="nav nav-pills nav-stacked">
           <li class="im_dialog_wrap" my-dialog dialog-message="dialogMessage" ng-repeat="dialogMessage in dialogs track by dialogMessage.peerID" ng-class="{active: curDialog.peerID == dialogMessage.peerID}"></li>
         </ul>
 

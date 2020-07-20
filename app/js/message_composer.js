@@ -1142,6 +1142,18 @@ MessageComposer.prototype.checkAutocomplete = function (forceFull) {
 MessageComposer.prototype.onFocusBlur = function (e) {
   this.isActive = e.type == 'focus'
 
+  if (e.type == 'focus') {
+    __INPUTFOCUSID = 'send_form_text'
+    __INPUTFOCUS = true
+  } else if (e.type == 'blur') {
+    document.getElementById('send_form_text').blur()
+    __INPUTFOCUSID = null
+    __INPUTFOCUS = false
+    if (document.getElementById('send_form_text').value === "") {
+      window.history.back()
+    }
+  }
+
   if (!this.isActive) {
     this.cleanRichTextarea()
     this.hideSuggestions()

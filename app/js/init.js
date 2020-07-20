@@ -1,11 +1,16 @@
+var __INPUTFOCUSID = null
+var __INPUTFOCUS = false
+var __MODALSTACK = []
 var __EXITAPP = true
 
-function __stayInAppCb() {
+function __pushModalStack(modal) {
   __EXITAPP = false
+  __MODALSTACK.push(modal)
 }
 
-function __exitAppCb() {
+function __popModalStack() {
   __EXITAPP = true
+  __MODALSTACK.pop()
 }
 
 function __getExitStatus() {
@@ -26,6 +31,7 @@ document.getScroll = function() {
 }
 
 function handleKeydown(e) {
+  console.log('handleKeydown init.js');
   switch(e.key) {
     case "SoftLeft":
       var scroll = document.getScroll()
@@ -37,17 +43,44 @@ function handleKeydown(e) {
       break
     case "BrowserBack":
     case "Backspace":
-      console.log(document.location.hash, __EXITAPP);
-      if (document.location.hash === '#/login' && __EXITAPP) {
-        window.close()
-      } else if (document.location.hash === '#/im' && __EXITAPP) {
-        window.close()
+      e.preventDefault()
+      e.stopPropagation()
+      if (__INPUTFOCUS && __INPUTFOCUSID !== null) {
+        console.log('DEBUG', __INPUTFOCUS, __INPUTFOCUSID)
+        var __INPUT = document.getElementById(__INPUTFOCUSID)
+        if (__INPUT.value === "") {
+          __INPUT.blur()
+          __INPUTFOCUSID = null
+          __INPUTFOCUS = false
+        }
+      } else if (__MODALSTACK.length > 0) {
+        __MODALSTACK[__MODALSTACK.length - 1].dismiss()
+      } else if (document.location.hash !== '#/im' && document.location.hash !== '#/login') {
+        window.history.back()
       } else {
-        __EXITAPP = true
+        window.close()
       }
+      //console.log(document.location.hash, __EXITAPP)
+      //console.log(__INPUTFOCUSID, __INPUTFOCUS)
+      //if (document.location.hash === '#/login' && __EXITAPP) {
+        //window.close()
+      //} else if (document.location.hash === '#/im' && __EXITAPP) {
+        //window.close()
+      //} else {
+        //__EXITAPP = true
+      //}
       break
-    case 'Call':
+    case "Control":
+    case "Call":
       $("input").blur()
+      if (__INPUTFOCUS && __INPUTFOCUSID !== null) {
+        var __INPUT = document.getElementById(__INPUTFOCUSID)
+        if (__INPUT.value === "") {
+          __INPUT.blur()
+          __INPUTFOCUSID = null
+          __INPUTFOCUS = false
+        }
+      }
       break
   }
   return

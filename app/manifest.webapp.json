@@ -3,11 +3,12 @@
   "description": "Unofficial Telegram Web App.\nMore info & source code here: https://github.com/zhukov/webogram",
   "short_name": "KaiTGram",
   "display": "standalone",
-  "theme_color": "#497495",
+  "theme": "#868686",
+  "theme_color": "#868686",
   "gcm_sender_id": "122867383838",
   "start_url": "./?utm_source=web_app_manifest",
   "scope": "/",
-  "background_color": "#fff",
+  "background_color": "#868686",
   "icons": [
     {
       "src": "img/icons/icon16.png",

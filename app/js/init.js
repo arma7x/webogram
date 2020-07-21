@@ -31,7 +31,7 @@ document.getScroll = function() {
 }
 
 function handleKeydown(e) {
-  console.log('handleKeydown init.js');
+  //console.log('handleKeydown init.js');
   switch(e.key) {
     case "SoftLeft":
       var scroll = document.getScroll()
@@ -46,7 +46,7 @@ function handleKeydown(e) {
       e.preventDefault()
       e.stopPropagation()
       if (__INPUTFOCUS && __INPUTFOCUSID !== null) {
-        console.log('DEBUG', __INPUTFOCUS, __INPUTFOCUSID)
+        //console.log('DEBUG', __INPUTFOCUS, __INPUTFOCUSID)
         var __INPUT = document.getElementById(__INPUTFOCUSID)
         if (__INPUT.value === "") {
           __INPUT.blur()
@@ -60,15 +60,6 @@ function handleKeydown(e) {
       } else {
         window.close()
       }
-      //console.log(document.location.hash, __EXITAPP)
-      //console.log(__INPUTFOCUSID, __INPUTFOCUS)
-      //if (document.location.hash === '#/login' && __EXITAPP) {
-        //window.close()
-      //} else if (document.location.hash === '#/im' && __EXITAPP) {
-        //window.close()
-      //} else {
-        //__EXITAPP = true
-      //}
       break
     case "Control":
     case "Call":

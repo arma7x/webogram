@@ -4,6 +4,9 @@
   "version": "0.7.0",
   "type": "privileged",
   "launch_path": "/index.html",
+  "theme": "#868686",
+  "theme_color": "#868686",
+  "background_color": "#868686",
   "cursor": true,
   "developer": {
     "name": "Igor Zhukov",

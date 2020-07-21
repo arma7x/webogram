@@ -836,6 +836,16 @@ MessageComposer.prototype.setUpPlaintext = function () {
 }
 
 MessageComposer.prototype.onKeyEvent = function (e) {
+  //console.log('MessageComposer', 'onKeyEvent', __INPUTFOCUS, __INPUTFOCUSID)
+  if (document.getElementById(__INPUTFOCUSID) !== null && e.key == 'Backspace') {
+    if (document.getElementById(__INPUTFOCUSID).value !== null) {
+      if (document.getElementById(__INPUTFOCUSID).value === "") {
+        document.activeElement.blur()
+        return
+      }
+    }
+  }
+
   var self = this
   if (e.type == 'keyup') {
     // console.log(dT(), 'keyup', e.keyCode)
@@ -1142,22 +1152,13 @@ MessageComposer.prototype.checkAutocomplete = function (forceFull) {
 MessageComposer.prototype.onFocusBlur = function (e) {
   this.isActive = e.type == 'focus'
 
-  if (e.type == 'focus') {
-    __INPUTFOCUSID = 'send_form_text'
-    __INPUTFOCUS = true
-  } else if (e.type == 'blur') {
-    document.getElementById('send_form_text').blur()
-    __INPUTFOCUSID = null
-    __INPUTFOCUS = false
-    if (document.getElementById('send_form_text').value === "") {
-      window.history.back()
-    }
-  }
-
   if (!this.isActive) {
     this.cleanRichTextarea()
     this.hideSuggestions()
   } else {
+    __INPUTFOCUSID = 'send_form_text'
+    __INPUTFOCUS = true
+    //console.log('MessageComposer', __INPUTFOCUS, __INPUTFOCUSID, document.getElementById(__INPUTFOCUSID).value)
     setTimeout(this.checkAutocomplete.bind(this), 100)
   }
   if (this.richTextareaEl) {
@@ -1220,7 +1221,7 @@ MessageComposer.prototype.onRichPasteNode = function (e) {
     var blob = dataUrlToBlob(src)
     this.onFilePaste(blob)
     setZeroTimeout(function () {
-      element.parentNode.replaceChild(document.createTextNode('   '), element)
+      element.parentNode.replaceChild(document.createTextNode('   '), element)
     })
   }
   else if (src && !src.match(/img\/blank\.gif/)) {

@@ -9,6 +9,9 @@
       "scripts": ["js/background.js"]
     }
   },
+  "theme": "#868686",
+  "theme_color": "#868686",
+  "background_color": "#868686",
   "permissions": [
     "notifications",
     "webview",

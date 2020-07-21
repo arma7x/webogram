@@ -353,7 +353,7 @@ gulp.task('publish', gulp.series('add-appcache-manifest', 'generate-service-work
 gulp.task('default', gulp.series('build'))
 
 gulp.task('zip', function (done) {
-  child_process.exec("cd dist && zip -r ../dist/application_$(date +'%Y%m%d%H%M').zip ./*", function (error, stdout, stderr) {
+  child_process.exec("rm ./*.zip || cd dist && zip -r ../application_$(date +'%Y%m%d%H%M').zip ./*", function (error, stdout, stderr) {
     if (error) {
       console.log(`error: ${error.message}`);
       done();

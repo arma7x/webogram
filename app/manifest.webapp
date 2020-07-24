@@ -12,6 +12,7 @@
     "name": "Igor Zhukov",
     "url": "https://github.com/zhukov"
   },
+  "origin": "app://kaitgram.arma7x.com",
   "installs_allowed_from": [
     "*"
   ],

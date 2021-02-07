@@ -4297,7 +4297,9 @@ angular.module('myApp.services', ['myApp.i18n', 'izhukov.utils'])
         other_uids: []
       }).then(function () {
         registeredDevice = tokenData
+        console.log('success account.registerDevice', registeredDevice)
       }, function (error) {
+        console.log('error account.registerDevice', error.toString())
         error.handled = true
       })
     }

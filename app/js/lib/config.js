@@ -21,8 +21,7 @@ Config.App = {
   id: 1403915,
   hash: '1291d66d65b509ed6d5fce437185a8cc',
   version: '0.7.0',
-  domains: [],
-  vapidKey: ''
+  domains: []
 }
 
 Config.Modes = {

@@ -10,14 +10,20 @@ switch (location.hostname) {
   case 'zhukov.github.io':
     defaultBaseUrl = 'https://zhukov.github.io/webogram/#/im'
     break
+  case 'kaitgram.arma7x.com':
+    defaultBaseUrl = 'app://kaitgram.arma7x.com/#/im'
+    break
   default:
   case 'web.telegram.org':
     defaultBaseUrl = 'https://' + location.hostname + '/#/im'
 }
 
 self.addEventListener('push', function(event) {
+  console.log('[SW] push')
+  console.log('[SW] push data')
+  console.dir(event)
   var obj = event.data.json()
-  console.log('[SW] push', obj)
+  console.log('[SW] push obj', obj)
 
   var hasActiveWindows = false
   var checksPromise = new Promise(function (resolve, reject) {
@@ -39,8 +45,10 @@ self.addEventListener('push', function(event) {
           return reject()
         }
         if (!obj.badge) {
+          console.log('No badge')
           return reject()
         }
+        console.log('resolve')
         return resolve()
       })
     })
@@ -73,11 +81,15 @@ self.addEventListener('push', function(event) {
 })
 
 self.addEventListener('install', function(event) {
-  event.waitUntil(self.skipWaiting());
+  console.log('[SW] on install')
+  //event.waitUntil(self.skipWaiting());
+  self.skipWaiting();
 });
+
 self.addEventListener('activate', function(event) {
   console.log('[SW] on activate')
-  event.waitUntil(self.clients.claim());
+  //event.waitUntil(self.clients.claim());
+  //self.skipWaiting();
 });
 
 

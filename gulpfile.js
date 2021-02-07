@@ -231,7 +231,8 @@ function writeServiceWorkerFile (rootDir, handleFetch, callback) {
     importScripts: ['js/lib/push_worker.js'],
     verbose: true,
     maximumFileSizeToCacheInBytes: 3004152, // about 3MB, default is "2097152" 2MB,
-    navigateFallback: 'index.html'
+    navigateFallback: 'index.html',
+    templateFilePath: './app/service-worker.tmpl'
   }
   swPrecache.write(path.join(rootDir, 'service_worker.js'), config, callback)
 }
@@ -353,7 +354,7 @@ gulp.task('publish', gulp.series('add-appcache-manifest', 'generate-service-work
 gulp.task('default', gulp.series('build'))
 
 gulp.task('zip', function (done) {
-  child_process.exec("rm ./*.zip || cd dist && zip -r ../application_$(date +'%Y%m%d%H%M').zip ./*", function (error, stdout, stderr) {
+  child_process.exec("rm application.zip && cd dist && zip -r ../application.zip ./*", function (error, stdout, stderr) {
     if (error) {
       console.log(`error: ${error.message}`);
       done();

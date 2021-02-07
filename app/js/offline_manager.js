@@ -1,4 +1,4 @@
-;(function initAutoUpgrade () {
+
   window.safeConfirm = function (params, callback) {
     if (typeof params === 'string') {
       params = {message: params}
@@ -15,7 +15,6 @@
   if ((!navigator.serviceWorker && !window.applicationCache) ||
     Config.Modes.packed ||
     !window.addEventListener) {
-    return
   }
 
   var declined = false
@@ -31,9 +30,14 @@
     }
   }
 
+  console.log(window.location.origin + '/service_worker.js')
   if (navigator.serviceWorker) {
     // If available, use a Service Worker to handle offlining.
-    navigator.serviceWorker.register('service_worker.js').then(function (registration) {
+    var path = 'service_worker.js'
+    if (window.location.origin === 'app://kaitgram.arma7x.com') {
+      path = 'app://kaitgram.arma7x.com/service_worker.js'
+    }
+    navigator.serviceWorker.register(path).then(function (registration) {
       console.log('Offline worker registered')
       registration.addEventListener('updatefound', function () {
         var installingWorker = this.installing
@@ -84,4 +88,4 @@
       appCache.addEventListener('error', function () {scheduleUpdate()}, false)
     })
   }
-})()
+

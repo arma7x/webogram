@@ -2057,6 +2057,7 @@ angular.module('izhukov.utils', [])
         return
       }
       navigator.serviceWorker.ready.then(function(reg) {
+        // {userVisibleOnly: userVisibleOnly}
         reg.pushManager.subscribe({userVisibleOnly: userVisibleOnly}).then(function(subscription) {
           // The subscription was successful
           isPushEnabled = true
